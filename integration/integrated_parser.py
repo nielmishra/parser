@@ -19,7 +19,11 @@ def get_plot_files(file):
     parsed_files = []
     dir1 = str(file)
         
-    os.mkdir(dir1[:-4])
+        
+    if not os.path.exists(dir1[:-4]):
+        os.makedirs(dir1[:-4])    
+        
+         
     for i in range(len(array)):
         dict_data[i] = array[i]
         
@@ -31,7 +35,7 @@ def get_plot_files(file):
                 items = j.split()
                 parameters.append(items) if len(parameters) < i+1 else None
                 continue
-            if j.startswith('--'): 
+            if j.startswith('--') or '*' in j: 
                 continue
             else:   
                 write_file.write(j+'\n')
@@ -47,6 +51,7 @@ def loudew(file):
         for i in range(2, len(data)):
 
             plt.plot([x.strip(',') for x in data[1]], [y.strip(',') for y in data[i]])
+            
             try:
                 plt.xlabel(parameter[1]), plt.ylabel(parameter[i]) 
                 plt.title('%s  vs  %s'%(parameter[1], parameter[i]))
